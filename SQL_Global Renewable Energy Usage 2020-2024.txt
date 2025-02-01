@@ -1,0 +1,116 @@
+select* from `dqlabmufi.02latihanproject.RE_usage`;
+
+-- Samples Distribution based on Region
+select
+Region,
+count(region) as count_region_sampled
+from `dqlabmufi.02latihanproject.RE_usage`
+group by Region
+order by count_region_sampled desc;
+
+-- Annual Samples Distribution
+select
+year,
+count(year) as count_year_sampled
+from `dqlabmufi.02latihanproject.RE_usage`
+group by year
+order by year desc;
+
+-- Total Annual Usage of Renewable Energy in Households Across Different Years
+select
+  year,
+  round(sum(monthly_usage_kwh),2) as total_usage_kwh,
+from `dqlabmufi.02latihanproject.RE_usage`
+group by year
+order by year desc;
+
+-- Total Household Usage of Renewable Energy in 2024
+select
+  energy_source,
+  round(sum(monthly_usage_kwh),2) as total_usage_kwh,
+from `dqlabmufi.02latihanproject.RE_usage`
+where
+  Year=2024
+group by energy_source
+order by total_usage_kwh desc;
+
+-- The Average of Monthly Household Usage of Renewable Energy
+select
+  year,
+  energy_source,
+  round(avg(monthly_usage_kwh),2) as avg_usage_kwh,
+from `dqlabmufi.02latihanproject.RE_usage`
+where
+  monthly_usage_kwh is not null
+group by energy_source,year
+order by energy_source, year desc;
+
+-- The Average of Monthly Household Usage of Renewable Energy in 2024
+select
+  energy_source,
+  round(avg(monthly_usage_kwh),2) as avg_usage_kwh,
+from `dqlabmufi.02latihanproject.RE_usage`
+where
+  Year=2024 and monthly_usage_kwh is not null
+group by energy_source
+order by avg_usage_kwh desc;
+
+-- The Adoption Trends of Renewable Energy Across Different Countries and Regions
+select
+  region,
+  country,
+  energy_source,
+  round(sum(monthly_usage_kwh)) as total_usage_kwh,
+from `dqlabmufi.02latihanproject.RE_usage`
+group by region, energy_source, country
+order by Region;
+
+-- Comparing The Average of Renewable Energy Usage between Urban and Rural Areas
+-- Comparing Energy Usage Patterns between urban and Rural Areas
+select
+  Year,
+  energy_source,
+  round(avg(case when urban_rural='Urban' then Monthly_Usage_kWh end)) Avg_Urban_Usage,
+  round(avg(case when urban_rural='Rural' then Monthly_Usage_kWh end)) Avg_Rural_Usage
+from `dqlabmufi.02latihanproject.RE_usage`
+where Monthly_Usage_kWh is not null
+group by Year, energy_source
+order by Year desc;
+
+-- The impact of income levels and household size on renewable energy adoption.
+select 
+  income_level,
+  household_size,
+  energy_source,
+  round(avg(Monthly_Usage_kWh),2) as avg_energy_usage
+from `dqlabmufi.02latihanproject.RE_usage`
+where Monthly_Usage_kWh is not null
+group by energy_source, household_size, income_level
+order by income_level, household_size;
+
+-- The Role of Government Subsidies in Encouraging Renewable Energy Usage
+select
+  Country,
+  energy_source,
+  count(subsidy_received) as count_subsidy
+from `dqlabmufi.02latihanproject.RE_usage`
+where subsidy_received is true
+group by country, energy_source
+order by country desc, count_subsidy desc;
+
+-- Total Cost Savings of Energy Sources
+select
+energy_source,
+round(sum(Cost_Savings_USD),2) as sum_cost_savings
+from `dqlabmufi.02latihanproject.RE_usage`
+group by energy_source
+order by sum_cost_savings desc;
+
+-- The Average of Cost Savings of Renewable Energy Sources
+select
+energy_source,
+round(avg(Cost_Savings_USD),2) as avg_cost_savings
+from `dqlabmufi.02latihanproject.RE_usage`
+where Cost_Savings_USD is not null
+group by energy_source
+order by avg_cost_savings desc;
