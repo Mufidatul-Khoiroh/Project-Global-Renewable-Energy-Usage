@@ -1,2 +1,2 @@
 # Project-Household-Renewable-Energy-Usage
-Data Analysis with SQL and Python
+Data Analysis with SQL, Python, and Excel
