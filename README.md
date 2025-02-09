@@ -1,2 +1,2 @@
-# Project-Global-Renewable-Energy-Usage
+# Project-Household-Renewable-Energy-Usage
 Data Analysis with SQL and Python
